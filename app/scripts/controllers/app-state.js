@@ -26,7 +26,6 @@ export default class AppStateController extends EventEmitter {
       initState,
       onInactiveTimeout,
       preferencesStore,
-      qrHardwareStore,
       messenger,
     } = opts;
     super();
@@ -50,7 +49,6 @@ export default class AppStateController extends EventEmitter {
       trezorModel: null,
       currentPopupId: undefined,
       ...initState,
-      qrHardware: {},
       nftsDropdownState: {},
       // This key is only used for checking if the user had set advancedGasFee
       // prior to Migration 92.3 where we split out the setting to support
@@ -74,10 +72,6 @@ export default class AppStateController extends EventEmitter {
       if (currentState.timeoutMinutes !== preferences.autoLockTimeLimit) {
         this._setInactiveTimeout(preferences.autoLockTimeLimit);
       }
-    });
-
-    qrHardwareStore.subscribe((state) => {
-      this.store.updateState({ qrHardware: state });
     });
 
     const { preferences } = preferencesStore.getState();

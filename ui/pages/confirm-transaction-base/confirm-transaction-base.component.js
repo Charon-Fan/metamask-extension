@@ -393,8 +393,9 @@ export default class ConfirmTransactionBase extends Component {
 
     const renderTotalDetailTotal = (value) => {
       if (
-        primaryTotalTextOverride === undefined &&
-        secondaryTotalTextOverride === undefined
+        (primaryTotalTextOverride === undefined &&
+          secondaryTotalTextOverride === undefined) ||
+        value === '0x0'
       ) {
         return (
           <div className="confirm-page-container-content__total-value">
@@ -415,8 +416,9 @@ export default class ConfirmTransactionBase extends Component {
 
     const renderTotalDetailText = (value) => {
       if (
-        primaryTotalTextOverride === undefined &&
-        secondaryTotalTextOverride === undefined
+        (primaryTotalTextOverride === undefined &&
+          secondaryTotalTextOverride === undefined) ||
+        value === '0x0'
       ) {
         return (
           <div className="confirm-page-container-content__total-value">
@@ -548,9 +550,6 @@ export default class ConfirmTransactionBase extends Component {
               <div key="confirm-transaction-base-total-item">
                 <TransactionDetailItem
                   detailTitle={t('metamaskFees')}
-                  detailText={
-                    useCurrencyRateCheck && renderTotalDetailText('0x0')
-                  }
                   detailTotal={renderTotalDetailTotal('0x0')}
                   boldHeadings={false}
                 />

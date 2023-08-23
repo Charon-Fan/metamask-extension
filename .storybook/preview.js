@@ -18,6 +18,7 @@ import { createBrowserHistory } from 'history';
 import { _setBackgroundConnection } from '../ui/store/action-queue';
 import MetaMaskStorybookTheme from './metamask-storybook-theme';
 import { addons } from '@storybook/addons';
+import { Theme } from '@radix-ui/themes';
 
 export const parameters = {
   backgrounds: {
@@ -113,7 +114,9 @@ const metamaskDecorator = (story, context) => {
             current={current}
             en={allLocales.en}
           >
-            <LegacyI18nProvider>{story()}</LegacyI18nProvider>
+            <LegacyI18nProvider>
+              <Theme>{story()}</Theme>
+            </LegacyI18nProvider>
           </I18nProvider>
         </MetaMetricsProviderStorybook>
       </Router>
@@ -121,6 +124,4 @@ const metamaskDecorator = (story, context) => {
   );
 };
 
-export const decorators = [
-  metamaskDecorator,
-];
+export const decorators = [metamaskDecorator];

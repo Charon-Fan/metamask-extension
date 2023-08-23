@@ -32,6 +32,7 @@ export const AccountPicker = ({
   onClick,
   disabled,
   showAddress = false,
+  ...props
 }) => {
   const useBlockie = useSelector((state) => state.metamask.useBlockie);
   const shortenedAddress = shortenAddress(toChecksumHexAddress(address));
@@ -50,6 +51,7 @@ export const AccountPicker = ({
         alignItems: AlignItems.center,
       }}
       disabled={disabled}
+      {...props}
     >
       <Box
         display={Display.Flex}

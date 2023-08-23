@@ -77,6 +77,7 @@ export const AccountListItem = ({
   closeMenu,
   connectedAvatar,
   connectedAvatarName,
+  ...props
 }) => {
   const t = useI18nContext();
   const [accountOptionsMenuOpen, setAccountOptionsMenuOpen] = useState(false);
@@ -121,6 +122,7 @@ export const AccountListItem = ({
           onClick();
         }
       }}
+      {...props}
     >
       {selected && (
         <Box

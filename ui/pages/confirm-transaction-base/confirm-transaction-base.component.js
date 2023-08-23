@@ -71,6 +71,7 @@ import {
   Text,
 } from '../../components/component-library';
 import fetchEstimatedL1Fee from '../../helpers/utils/optimism/fetchEstimatedL1Fee';
+import FeeDetailsComponent from '../../components/app/fee-details-component/fee-details-component';
 
 export default class ConfirmTransactionBase extends Component {
   static contextTypes = {
@@ -515,75 +516,11 @@ export default class ConfirmTransactionBase extends Component {
                 <ConfirmGasDisplay
                   userAcknowledgedGasMissing={userAcknowledgedGasMissing}
                 />
-                {this.supportsEIP1559 && (
-                  <Box
-                    padding={4}
-                    display={Display.Flex}
-                    alignItems={AlignItems.center}
-                    justifyContent={JustifyContent.center}
-                  >
-                    <Button
-                      style={{ textDecoration: 'none' }}
-                      size={Size.Xs}
-                      variant={BUTTON_VARIANT.LINK}
-                      endIconName={
-                        expandFeeDetails ? IconName.ArrowUp : IconName.ArrowDown
-                      }
-                      color={IconColor.primaryDefault}
-                      data-testid="expand-fee-details-button"
-                      onClick={() =>
-                        this.setExpandFeeDetails(!expandFeeDetails)
-                      }
-                    >
-                      <Text
-                        variant={TextVariant.bodySm}
-                        color={IconColor.primaryDefault}
-                      >
-                        {t('feeDetails')}
-                      </Text>
-                    </Button>
-                  </Box>
-                )}
-              </div>
-            ),
-            this.supportsEIP1559 && expandFeeDetails && (
-              <div key="confirm-transaction-base-total-item">
-                <TransactionDetailItem
-                  detailTitle={t('metamaskFees')}
-                  detailTotal={renderTotalDetailTotal('0x0')}
-                  boldHeadings={false}
-                />
-                {isMultiLayerFeeNetwork && (
-                  <TransactionDetailItem
-                    detailTitle={t('optimismFees')}
-                    detailText={
-                      useCurrencyRateCheck &&
-                      renderTotalDetailText(hexMaximumTransactionFee)
-                    }
-                    detailTotal={renderTotalDetailTotal(
-                      hexMaximumTransactionFee,
-                    )}
-                    boldHeadings={false}
-                  />
-                )}
-                {isMultiLayerFeeNetwork && estimatedL1Fees && (
-                  <TransactionDetailItem
-                    detailTitle={t('layer1Fees')}
-                    detailText={
-                      useCurrencyRateCheck &&
-                      renderTotalDetailText(estimatedL1Fees)
-                    }
-                    detailTotal={renderTotalDetailTotal(estimatedL1Fees)}
-                    boldHeadings={false}
-                  />
-                )}
-                <TransactionDetailItem
-                  detailTitle={t('total')}
-                  detailText={
-                    useCurrencyRateCheck &&
-                    renderTotalDetailText(getTransactionFeeTotal())
-                  }
-                  detailTotal={renderTotalDetailTotal(getTransactionFeeTotal())}
+                <FeeDetailsComponent
+                  hexMinimumTransactionFee={hexMinimumTransactionFee}
+                  supportsEIP1559={this.supportsEIP1559}
+                  useCurrencyRateCheck={useCurrencyRateCheck}
+                  txData={txData}
                 />
               </div>
             ),

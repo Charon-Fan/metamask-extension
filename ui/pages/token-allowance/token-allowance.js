@@ -88,6 +88,7 @@ import fetchEstimatedL1Fee from '../../helpers/utils/optimism/fetchEstimatedL1Fe
 import TransactionDetailItem from '../../components/app/transaction-detail-item/transaction-detail-item.component';
 import { PRIMARY, SECONDARY } from '../../helpers/constants/common';
 import { addHexes } from '../../../shared/modules/conversion.utils';
+import FeeDetailsComponent from '../../components/app/fee-details-component/fee-details-component';
 
 const ALLOWED_HOSTS = ['portfolio.metamask.io'];
 
@@ -603,73 +604,15 @@ export default function TokenAllowance({
           />
         </Box>
       )}
-      {supportsEIP1559 && !isFirstPage && (
-        <Box
-          padding={4}
-          display={Display.Flex}
-          alignItems={AlignItems.center}
-          justifyContent={JustifyContent.center}
-          flexDirection={FlexDirection.Row}
-        >
-          <IconButton
-            style={{ textDecoration: 'none' }}
-            size={Size.Xs}
-            variant={BUTTON_VARIANT.LINK}
-            endIconName={
-              expandFeeDetails ? IconName.ArrowUp : IconName.ArrowDown
-            }
-            color={IconColor.primaryDefault}
-            data-testid="expand-fee-details-button"
-            onClick={() => setExpandFeeDetails(!expandFeeDetails)}
-          >
-            <Text variant={TextVariant.bodySm} color={IconColor.primaryDefault}>
-              {t('feeDetails')}
-            </Text>
-          </IconButton>
-        </Box>
-      )}
-      {supportsEIP1559 && expandFeeDetails && !isFirstPage && (
-        <Box
-          padding={4}
-          display={Display.Flex}
-          flexDirection={FlexDirection.Column}
-        >
-          <TransactionDetailItem
-            detailTitle={t('metamaskFees')}
-            detailTotal={renderTotalDetailTotal('0x0')}
-            boldHeadings={false}
-          />
-          {isMultiLayerFeeNetwork && (
-            <TransactionDetailItem
-              detailTitle={t('optimismFees')}
-              detailText={
-                useCurrencyRateCheck &&
-                renderTotalDetailText(hexMinimumTransactionFee)
-              }
-              detailTotal={renderTotalDetailTotal(hexMinimumTransactionFee)}
-              boldHeadings={false}
-            />
-          )}
-          {isMultiLayerFeeNetwork && estimatedL1Fees && (
-            <TransactionDetailItem
-              detailTitle={t('layer1Fees')}
-              detailText={
-                useCurrencyRateCheck && renderTotalDetailText(estimatedL1Fees)
-              }
-              detailTotal={renderTotalDetailTotal(estimatedL1Fees)}
-              boldHeadings={false}
-            />
-          )}
-          <TransactionDetailItem
-            detailTitle={t('total')}
-            detailText={
-              useCurrencyRateCheck &&
-              renderTotalDetailText(getTransactionFeeTotal())
-            }
-            detailTotal={renderTotalDetailTotal(getTransactionFeeTotal())}
-          />
-        </Box>
-      )}
+      <Box marginTop={4} marginRight={4} marginLeft={4}>
+        <FeeDetailsComponent
+          hexMinimumTransactionFee={hexMinimumTransactionFee}
+          supportsEIP1559={supportsEIP1559}
+          useCurrencyRateCheck={useCurrencyRateCheck}
+          txData={txData}
+          shouldShow={!isFirstPage}
+        />
+      </Box>
       <Box
         display={DISPLAY.FLEX}
         flexDirection={FLEX_DIRECTION.ROW}

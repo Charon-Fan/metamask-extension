@@ -38,6 +38,7 @@ import UserPreferencedCurrencyDisplay from '../../../components/app/user-prefere
 import { PRIMARY, SECONDARY } from '../../../helpers/constants/common';
 import { ConfirmGasDisplay } from '../../../components/app/confirm-gas-display';
 import CustomNonce from '../../../components/app/custom-nonce';
+import FeeDetailsComponent from '../../../components/app/fee-details-component/fee-details-component';
 
 export default class ConfirmApproveContent extends Component {
   static contextTypes = {
@@ -106,6 +107,9 @@ export default class ConfirmApproveContent extends Component {
       supportsEIP1559,
       renderSimulationFailureWarning,
       userAcknowledgedGasMissing,
+      txData,
+      hexMinimumTransactionFee,
+      useCurrencyRateCheck,
     } = this.props;
     const { t } = this.context;
     return (
@@ -127,28 +131,17 @@ export default class ConfirmApproveContent extends Component {
                 </div>
               </>
             )}
-            {showEdit && (!showAdvanceGasFeeOptions || !supportsEIP1559) && (
-              <Box width={BLOCK_SIZES.ONE_SIXTH}>
-                <Button
-                  type="link"
-                  className="confirm-approve-content__small-blue-text"
-                  onClick={() => onEditClick()}
-                >
-                  {t('edit')}
-                </Button>
-              </Box>
-            )}
-            {showEdit &&
-              showAdvanceGasFeeOptions &&
-              supportsEIP1559 &&
-              !renderSimulationFailureWarning && (
-                <EditGasFeeButton
-                  userAcknowledgedGasMissing={userAcknowledgedGasMissing}
-                />
-              )}
           </div>
         )}
         <div className="confirm-approve-content__card-content">{content}</div>
+
+        <FeeDetailsComponent
+          txData={txData}
+          hexMinimumTransactionFee={hexMinimumTransactionFee}
+          supportsEIP1559={supportsEIP1559}
+          useCurrencyRateCheck={useCurrencyRateCheck}
+        />
+
         {footer}
       </div>
     );

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   AlignItems,
   Display,
@@ -16,15 +18,13 @@ import {
   Text,
 } from '../../component-library';
 import TransactionDetailItem from '../transaction-detail-item/transaction-detail-item.component';
-import { useSelector } from 'react-redux';
 import { getIsMultiLayerFeeNetwork, getPreferences } from '../../../selectors';
-import PropTypes from 'prop-types';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import LoadingHeartBeat from '../../ui/loading-heartbeat';
 import UserPreferencedCurrencyDisplay from '../user-preferenced-currency-display/user-preferenced-currency-display.component';
 import { PRIMARY, SECONDARY } from '../../../helpers/constants/common';
-import fetchEstimatedL1Fee from '../../../helpers/utils/optimism/fetchEstimatedL1Fee';
 import { addHexes } from '../../../../shared/modules/conversion.utils';
+import fetchEstimatedL1Fee from '../../../helpers/utils/optimism/fetchEstimatedL1Fee';
 
 export default function FeeDetailsComponent({
   txData,
@@ -41,24 +41,25 @@ export default function FeeDetailsComponent({
 
   const t = useI18nContext();
 
-  const getEstimatedL1Fees = async () => {
+  useEffect(() => {
     if (isMultiLayerFeeNetwork) {
-      try {
-        const result = await fetchEstimatedL1Fee(txData?.chainId, txData);
-        setEstimatedL1Fees(result);
-      } catch (e) {
-        setEstimatedL1Fees(null);
-      }
+      fetchEstimatedL1Fee(txData?.chainId, txData)
+        .then((result) => {
+          setEstimatedL1Fees(result);
+        })
+        .catch((_err) => {
+          setEstimatedL1Fees(null);
+        });
     }
-  };
+  }, [isMultiLayerFeeNetwork, txData]);
 
-  const getTransactionFeeTotal = () => {
+  const getTransactionFeeTotal = useMemo(() => {
     if (isMultiLayerFeeNetwork) {
       return addHexes(hexMinimumTransactionFee, estimatedL1Fees || 0);
     }
 
     return hexMinimumTransactionFee;
-  };
+  }, [isMultiLayerFeeNetwork, hexMinimumTransactionFee, estimatedL1Fees]);
 
   const renderTotalDetailText = (value) => {
     return (

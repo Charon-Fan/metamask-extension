@@ -9,11 +9,9 @@ import { formatCurrency } from '../../../helpers/utils/confirm-tx.util';
 import Box from '../../../components/ui/box';
 import Button from '../../../components/ui/button';
 import SimulationErrorMessage from '../../../components/ui/simulation-error-message';
-import EditGasFeeButton from '../../../components/app/edit-gas-fee-button';
 import MultiLayerFeeMessage from '../../../components/app/multilayer-fee-message';
 import SecurityProviderBannerMessage from '../../../components/app/security-provider-banner-message/security-provider-banner-message';
 import {
-  BLOCK_SIZES,
   DISPLAY,
   TextColor,
   IconColor,
@@ -96,17 +94,12 @@ export default class ConfirmApproveContent extends Component {
     showHeader = true,
     symbol,
     title,
-    showEdit,
-    showAdvanceGasFeeOptions = false,
-    onEditClick,
     content,
     footer,
     noBorder,
   }) {
     const {
       supportsEIP1559,
-      renderSimulationFailureWarning,
-      userAcknowledgedGasMissing,
       txData,
       hexMinimumTransactionFee,
       useCurrencyRateCheck,

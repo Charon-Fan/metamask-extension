@@ -363,13 +363,16 @@ exports[`ConfirmSendEther should render correct information for for confirm send
                         class="gas-details-item__currency-container"
                       >
                         <button
-                          aria-label="edit"
-                          class="mm-box mm-button-icon mm-button-icon--size-sm mm-box--display-inline-flex mm-box--justify-content-center mm-box--align-items-center mm-box--color-icon-default mm-box--background-color-transparent mm-box--rounded-lg"
+                          class="mm-box mm-text mm-button-base mm-button-base--size-sm mm-button-link mm-text--body-md-medium mm-box--padding-0 mm-box--padding-right-0 mm-box--padding-left-0 mm-box--display-inline-flex mm-box--justify-content-center mm-box--align-items-center mm-box--color-primary-default mm-box--background-color-transparent"
                           data-testid="edit-gas-fee-icon"
+                          style="text-decoration: none;"
                         >
                           <span
-                            class="mm-box mm-icon mm-icon--size-sm mm-box--display-inline-block mm-box--color-inherit"
+                            class="mm-box mm-icon mm-icon--size-sm mm-box--margin-inline-end-1 mm-box--display-inline-block mm-box--color-inherit"
                             style="mask-image: url('./images/icons/edit.svg');"
+                          />
+                          <span
+                            class="mm-box mm-text mm-text--inherit mm-box--color-primary-default"
                           />
                         </button>
                         <div
@@ -470,27 +473,31 @@ exports[`ConfirmSendEther should render correct information for for confirm send
                 </div>
               </div>
               <div
-                class="mm-box mm-box--padding-4 mm-box--display-flex mm-box--justify-content-center mm-box--align-items-center"
+                class="mm-box mm-box--display-flex mm-box--flex-direction-column mm-box--justify-content-center mm-box--align-items-center"
               >
-                <button
-                  class="mm-box mm-text mm-button-base mm-button-link mm-button-link--size-auto mm-text--body-md-medium mm-box--padding-0 mm-box--padding-right-0 mm-box--padding-left-0 mm-box--display-inline-flex mm-box--justify-content-center mm-box--align-items-center mm-box--color-primary-default mm-box--background-color-transparent"
-                  data-testid="expand-fee-details-button"
-                  style="text-decoration: none;"
+                <div
+                  class="mm-box mm-box--padding-4 mm-box--display-flex mm-box--justify-content-center mm-box--align-items-center"
                 >
-                  <span
-                    class="mm-box mm-text mm-text--inherit mm-box--color-primary-default"
+                  <button
+                    class="mm-box mm-text mm-button-base mm-button-link mm-button-link--size-auto mm-text--body-md-medium mm-box--padding-0 mm-box--padding-right-0 mm-box--padding-left-0 mm-box--display-inline-flex mm-box--justify-content-center mm-box--align-items-center mm-box--color-primary-default mm-box--background-color-transparent"
+                    data-testid="expand-fee-details-button"
+                    style="text-decoration: none;"
                   >
-                    <p
-                      class="mm-box mm-text mm-text--body-sm mm-box--color-primary-default"
+                    <span
+                      class="mm-box mm-text mm-text--inherit mm-box--color-primary-default"
                     >
-                      Fee details
-                    </p>
-                  </span>
-                  <span
-                    class="mm-box mm-icon mm-icon--size-sm mm-box--margin-inline-start-1 mm-box--display-inline-block mm-box--color-inherit"
-                    style="mask-image: url('./images/icons/arrow-down.svg');"
-                  />
-                </button>
+                      <p
+                        class="mm-box mm-text mm-text--body-sm mm-box--color-primary-default"
+                      >
+                        Fee details
+                      </p>
+                    </span>
+                    <span
+                      class="mm-box mm-icon mm-icon--size-sm mm-box--margin-inline-start-1 mm-box--display-inline-block mm-box--color-inherit"
+                      style="mask-image: url('./images/icons/arrow-down.svg');"
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           </div>

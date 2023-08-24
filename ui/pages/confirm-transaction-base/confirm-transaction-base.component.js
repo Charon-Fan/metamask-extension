@@ -55,22 +55,6 @@ import { ConfirmTitle } from '../../components/app/confirm-title';
 import { ConfirmSubTitle } from '../../components/app/confirm-subtitle';
 import { ConfirmGasDisplay } from '../../components/app/confirm-gas-display';
 import updateTxData from '../../../shared/modules/updateTxData';
-import {
-  AlignItems,
-  Display,
-  IconColor,
-  JustifyContent,
-  Size,
-  TextVariant,
-} from '../../helpers/constants/design-system';
-import {
-  BUTTON_VARIANT,
-  Box,
-  Button,
-  IconName,
-  Text,
-} from '../../components/component-library';
-import fetchEstimatedL1Fee from '../../helpers/utils/optimism/fetchEstimatedL1Fee';
 import FeeDetailsComponent from '../../components/app/fee-details-component/fee-details-component';
 
 export default class ConfirmTransactionBase extends Component {
@@ -149,7 +133,6 @@ export default class ConfirmTransactionBase extends Component {
     nativeCurrency: PropTypes.string,
     supportsEIP1559: PropTypes.bool,
     hardwareWalletRequiresConnection: PropTypes.bool,
-    isMultiLayerFeeNetwork: PropTypes.bool,
     isBuyableChain: PropTypes.bool,
     isApprovalOrRejection: PropTypes.bool,
     assetStandard: PropTypes.string,
@@ -165,7 +148,6 @@ export default class ConfirmTransactionBase extends Component {
   };
 
   state = {
-    expandFeeDetails: false,
     submitting: false,
     submitError: null,
     submitWarning: '',
@@ -173,7 +155,6 @@ export default class ConfirmTransactionBase extends Component {
     editingGas: false,
     userAcknowledgedGasMissing: false,
     showWarningModal: false,
-    estimatedL1Fees: null,
     ///: BEGIN:ONLY_INCLUDE_IN(build-mmi)
     noteText: '',
     ///: END:ONLY_INCLUDE_IN
@@ -320,10 +301,6 @@ export default class ConfirmTransactionBase extends Component {
     this.setState({ editingGas: false });
   }
 
-  setExpandFeeDetails(expandFeeDetails) {
-    this.setState({ expandFeeDetails });
-  }
-
   setUserAcknowledgedGasMissing() {
     this.setState({ userAcknowledgedGasMissing: true });
   }
@@ -343,14 +320,12 @@ export default class ConfirmTransactionBase extends Component {
       useNativeCurrencyAsPrimaryCurrency,
       primaryTotalTextOverrideMaxAmount,
       showLedgerSteps,
-      isMultiLayerFeeNetwork,
       nativeCurrency,
       isBuyableChain,
       useCurrencyRateCheck,
     } = this.props;
     const { t } = this.context;
-    const { userAcknowledgedGasMissing, expandFeeDetails, estimatedL1Fees } =
-      this.state;
+    const { userAcknowledgedGasMissing } = this.state;
 
     const { valid } = this.getErrorKey();
     const isDisabled = () => {
@@ -389,29 +364,6 @@ export default class ConfirmTransactionBase extends Component {
       // Token send
       return useNativeCurrencyAsPrimaryCurrency
         ? primaryTotalTextOverrideMaxAmount
-        : secondaryTotalTextOverride;
-    };
-
-    const renderTotalDetailTotal = (value) => {
-      if (
-        (primaryTotalTextOverride === undefined &&
-          secondaryTotalTextOverride === undefined) ||
-        value === '0x0'
-      ) {
-        return (
-          <div className="confirm-page-container-content__total-value">
-            <LoadingHeartBeat estimateUsed={this.props.txData?.userFeeLevel} />
-            <UserPreferencedCurrencyDisplay
-              type={PRIMARY}
-              key="total-detail-value"
-              value={value}
-              hideLabel={!useNativeCurrencyAsPrimaryCurrency}
-            />
-          </div>
-        );
-      }
-      return useNativeCurrencyAsPrimaryCurrency
-        ? primaryTotalTextOverride
         : secondaryTotalTextOverride;
     };
 
@@ -481,14 +433,6 @@ export default class ConfirmTransactionBase extends Component {
         />
       </div>
     );
-
-    const getTransactionFeeTotal = () => {
-      if (isMultiLayerFeeNetwork) {
-        return addHexes(hexMaximumTransactionFee, estimatedL1Fees || 0);
-      }
-
-      return hexMaximumTransactionFee;
-    };
 
     return (
       <div className="confirm-page-container-content__details">
@@ -937,7 +881,6 @@ export default class ConfirmTransactionBase extends Component {
       }
     });
 
-    this.getEstimatedL1Fees();
     window.addEventListener('beforeunload', this._beforeUnloadForGasPolling);
   }
 
@@ -945,18 +888,6 @@ export default class ConfirmTransactionBase extends Component {
     this._beforeUnloadForGasPolling();
     this._removeBeforeUnload();
     this.props.clearConfirmTransaction();
-  }
-
-  async getEstimatedL1Fees() {
-    if (this.props.isMultiLayerFeeNetwork) {
-      const { txData } = this.props;
-      try {
-        const result = await fetchEstimatedL1Fee(txData?.chainId, txData);
-        this.setState({ estimatedL1Fees: result });
-      } catch (e) {
-        this.setState({ estimatedL1Fees: null });
-      }
-    }
   }
 
   supportsEIP1559 =

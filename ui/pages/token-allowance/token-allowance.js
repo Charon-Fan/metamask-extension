@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -11,13 +11,9 @@ import {
   BorderStyle,
   Color,
   DISPLAY,
-  Display,
   FLEX_DIRECTION,
-  FlexDirection,
   FontWeight,
-  IconColor,
   JustifyContent,
-  Size,
   TextAlign,
   TextColor,
   TextVariant,
@@ -39,7 +35,6 @@ import {
   getTargetAccountWithSendEtherInfo,
   getCustomNonceValue,
   getNextSuggestedNonce,
-  getPreferences,
 } from '../../selectors';
 import { NETWORK_TO_NAME_MAP } from '../../../shared/constants/network';
 import {
@@ -73,21 +68,9 @@ import { useSimulationFailureWarning } from '../../hooks/useSimulationFailureWar
 import SimulationErrorMessage from '../../components/ui/simulation-error-message';
 import LedgerInstructionField from '../../components/app/ledger-instruction-field/ledger-instruction-field';
 import SecurityProviderBannerMessage from '../../components/app/security-provider-banner-message/security-provider-banner-message';
-import {
-  BUTTON_VARIANT,
-  Icon,
-  IconName,
-  Text,
-  Button as IconButton,
-} from '../../components/component-library';
+import { Icon, IconName, Text } from '../../components/component-library';
 import { ConfirmPageContainerWarning } from '../../components/app/confirm-page-container/confirm-page-container-content';
 import CustomNonce from '../../components/app/custom-nonce';
-import LoadingHeartBeat from '../../components/ui/loading-heartbeat';
-import UserPreferencedCurrencyDisplay from '../../components/app/user-preferenced-currency-display/user-preferenced-currency-display.component';
-import fetchEstimatedL1Fee from '../../helpers/utils/optimism/fetchEstimatedL1Fee';
-import TransactionDetailItem from '../../components/app/transaction-detail-item/transaction-detail-item.component';
-import { PRIMARY, SECONDARY } from '../../helpers/constants/common';
-import { addHexes } from '../../../shared/modules/conversion.utils';
 import FeeDetailsComponent from '../../components/app/fee-details-component/fee-details-component';
 
 const ALLOWED_HOSTS = ['portfolio.metamask.io'];
@@ -123,7 +106,6 @@ export default function TokenAllowance({
   const dispatch = useDispatch();
   const history = useHistory();
   const mostRecentOverviewPage = useSelector(getMostRecentOverviewPage);
-  const { useNativeCurrencyAsPrimaryCurrency } = useSelector(getPreferences);
 
   const { hostname } = new URL(origin);
   const thisOriginIsAllowedToSkipFirstPage = ALLOWED_HOSTS.includes(hostname);
@@ -140,9 +122,6 @@ export default function TokenAllowance({
   const [errorText, setErrorText] = useState('');
   const [userAcknowledgedGasMissing, setUserAcknowledgedGasMissing] =
     useState(false);
-
-  const [expandFeeDetails, setExpandFeeDetails] = useState(false);
-  const [estimatedL1Fees, setEstimatedL1Fees] = useState(null);
 
   const renderSimulationFailureWarning = useSimulationFailureWarning(
     userAcknowledgedGasMissing,
@@ -285,28 +264,13 @@ export default function TokenAllowance({
     );
   };
 
-  const handleNextNonce = () => {
+  const handleNextNonce = useCallback(() => {
     dispatch(getNextNonce());
-  };
-
-  const getEstimatedL1Fees = async () => {
-    if (isMultiLayerFeeNetwork) {
-      try {
-        const result = await fetchEstimatedL1Fee(
-          fullTxData?.chainId,
-          fullTxData,
-        );
-        setEstimatedL1Fees(result);
-      } catch (e) {
-        setEstimatedL1Fees(null);
-      }
-    }
-  };
+  }, [getNextNonce, dispatch]);
 
   useEffect(() => {
     handleNextNonce();
-    getEstimatedL1Fees();
-  }, [dispatch]);
+  }, [handleNextNonce]);
 
   const handleUpdateCustomNonce = (value) => {
     dispatch(updateCustomNonce(value));
@@ -345,42 +309,6 @@ export default function TokenAllowance({
       />
     </Box>
   );
-
-  const renderTotalDetailTotal = (value) => {
-    return (
-      <div className="confirm-page-container-content__total-value">
-        <LoadingHeartBeat />
-        <UserPreferencedCurrencyDisplay
-          type={PRIMARY}
-          key="total-detail-value"
-          value={value}
-          hideLabel={!useNativeCurrencyAsPrimaryCurrency}
-        />
-      </div>
-    );
-  };
-
-  const renderTotalDetailText = (value) => {
-    return (
-      <div className="confirm-page-container-content__total-value">
-        <LoadingHeartBeat />
-        <UserPreferencedCurrencyDisplay
-          type={SECONDARY}
-          key="total-detail-text"
-          value={value}
-          hideLabel={Boolean(useNativeCurrencyAsPrimaryCurrency)}
-        />
-      </div>
-    );
-  };
-
-  const getTransactionFeeTotal = () => {
-    if (isMultiLayerFeeNetwork) {
-      return addHexes(hexMinimumTransactionFee, estimatedL1Fees || 0);
-    }
-
-    return hexMinimumTransactionFee;
-  };
 
   return (
     <Box className="token-allowance-container page-container">

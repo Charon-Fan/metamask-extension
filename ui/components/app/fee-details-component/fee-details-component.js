@@ -158,9 +158,9 @@ export default function FeeDetailsComponent({
             detailTitle={t('total')}
             detailText={
               useCurrencyRateCheck &&
-              renderTotalDetailText(getTransactionFeeTotal())
+              renderTotalDetailText(getTransactionFeeTotal)
             }
-            detailTotal={renderTotalDetailTotal(getTransactionFeeTotal())}
+            detailTotal={renderTotalDetailTotal(getTransactionFeeTotal)}
           />
         </Box>
       )}

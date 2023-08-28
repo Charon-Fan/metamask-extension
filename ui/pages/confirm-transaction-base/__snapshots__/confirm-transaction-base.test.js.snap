@@ -418,6 +418,9 @@ exports[`Confirm Transaction Base should match snapshot 1`] = `
                       </h6>
                     </div>
                   </div>
+                  <div
+                    class="mm-box mm-box--display-flex mm-box--flex-direction-column mm-box--justify-content-center mm-box--align-items-center"
+                  />
                 </div>
               </div>
             </div>

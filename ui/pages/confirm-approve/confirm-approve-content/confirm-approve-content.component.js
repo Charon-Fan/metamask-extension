@@ -46,7 +46,6 @@ export default class ConfirmApproveContent extends Component {
   static propTypes = {
     tokenSymbol: PropTypes.string,
     siteImage: PropTypes.string,
-    showCustomizeGasModal: PropTypes.func,
     origin: PropTypes.string,
     data: PropTypes.string,
     toAddress: PropTypes.string,
@@ -508,7 +507,6 @@ export default class ConfirmApproveContent extends Component {
       siteImage,
       origin,
       tokenSymbol,
-      showCustomizeGasModal,
       useNonceField,
       warning,
       txData,
@@ -620,7 +618,6 @@ export default class ConfirmApproveContent extends Component {
             title: t('transactionFee'),
             showEdit: true,
             showAdvanceGasFeeOptions: true,
-            onEditClick: showCustomizeGasModal,
             content: this.renderTransactionDetailsContent(),
             noBorder: useNonceField || !showFullTxDetails,
             footer: !useNonceField && (

@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { Box, Text } from '../../component-library';
 import {
-  Color,
   Display,
   FONT_WEIGHT,
   TextColor,
@@ -179,7 +178,7 @@ export default function GasTiming({
 
   return (
     <Box display={Display.Flex}>
-      <Text color={Color.textMuted} variant={TextVariant.bodyXs}>
+      <Text color={TextColor.textMuted} variant={TextVariant.bodyXs}>
         {text}
       </Text>
 

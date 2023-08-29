@@ -386,8 +386,11 @@ describe('Send ETH from dapp using advanced gas controls', function () {
           '.currency-display-component__text',
         );
 
-        // In my tests, I've some of these values change between e2e runs.
-        // I think it might be better to just check if it's there and numeric
+        /**
+         * Below lines check that fee values are numeric.
+         * Becauae these values change for every e2e run,
+         * It's better to just check that the values are there and are numeric
+         */
         assert.equal(allFeeValues.length, 6);
 
         allFeeValues.forEach(async (feeValue) => {

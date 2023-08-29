@@ -69,9 +69,6 @@ describe('MMIController', function () {
             },
           })),
         },
-        qrHardwareStore: {
-          subscribe: jest.fn(),
-        },
         messenger: {
           call: jest.fn(() => ({
             catch: jest.fn(),

@@ -53,7 +53,6 @@
     "trezorModel": "object",
     "nftsDropdownState": "object",
     "termsOfUseLastAgreed": "number",
-    "qrHardware": "object",
     "usedNetworks": "object",
     "snapsInstallPrivacyWarningShown": "boolean",
     "hadAdvancedGasFeesSetPriorToMigration92_3": "boolean",

@@ -24,6 +24,7 @@ import {
   toggleAccountMenu,
   toggleNetworkMenu,
 } from '../../store/actions';
+import { hideSitePermissionsModal } from '../../components/multichain/connected-site-permissions-pill/connected-site-permissions-pill-actions';
 import { pageChanged } from '../../ducks/history/history';
 import { prepareToLeaveSwaps } from '../../ducks/swaps/swaps';
 import { getSendStage } from '../../ducks/send';
@@ -69,6 +70,7 @@ function mapStateToProps(state) {
     accountDetailsAddress: state.appState.accountDetailsAddress,
     isImportNftsModalOpen: state.appState.importNftsModalOpen,
     isIpfsModalOpen: state.appState.showIpfsModalOpen,
+    isSitePermissionsModalOpen: state.appState.showSitePermissionsModal,
   };
 }
 
@@ -86,6 +88,7 @@ function mapDispatchToProps(dispatch) {
     hideImportNftsModal: () => dispatch(hideImportNftsModal()),
     hideIpfsModal: () => dispatch(hideIpfsModal()),
     hideImportTokensModal: () => dispatch(hideImportTokensModal()),
+    hideSitePermissionsModal: () => dispatch(hideSitePermissionsModal()),
   };
 }
 

@@ -20,3 +20,5 @@ export { ImportAccount } from './import-account';
 export { ImportNftsModal } from './import-nfts-modal';
 export { AccountDetailsMenuItem, ViewExplorerMenuItem } from './menu-items';
 export { ImportTokensModal } from './import-tokens-modal';
+export { ConnectedSitePermissionsModal } from './connected-site-permissions-modal';
+export { ConnectedSitePermissionsPill } from './connected-site-permissions-pill';
